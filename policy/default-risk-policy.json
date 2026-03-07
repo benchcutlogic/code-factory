@@ -59,14 +59,7 @@
     }
   },
   "docsDriftRules": {
-    "controlPlanePaths": [
-      ".github/workflows/**",
-      ".code-factory/**"
-    ],
-    "docsPaths": [
-      "README.md",
-      "docs/**",
-      "AGENTS.md"
-    ]
+    "controlPlanePaths": [],
+    "docsPaths": []
   }
 }
