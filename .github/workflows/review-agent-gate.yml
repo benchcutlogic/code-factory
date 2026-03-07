@@ -11,7 +11,7 @@ on:
         type: string
 
 jobs:
-  Review-Agent:
+  review_agent:
     name: Review Agent
     runs-on: ubuntu-latest
     permissions:

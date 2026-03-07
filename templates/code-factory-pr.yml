@@ -9,29 +9,33 @@ on:
       - ready_for_review
 
 jobs:
-  risk-policy-gate:
+  risk_policy_gate:
+    name: risk-policy-gate
     uses: benchcutlogic/code-factory/.github/workflows/risk-policy-gate.yml@main
     with:
       base_sha: ${{ github.event.pull_request.base.sha }}
       head_sha: ${{ github.event.pull_request.head.sha }}
     secrets: inherit
 
-  ci-pipeline:
-    needs: risk-policy-gate
+  ci_pipeline:
+    name: CI Pipeline
+    needs: risk_policy_gate
     uses: benchcutlogic/code-factory/.github/workflows/ci-pipeline.yml@main
     secrets: inherit
 
-  browser-evidence:
-    needs: risk-policy-gate
+  browser_evidence:
+    name: Browser Evidence
+    needs: risk_policy_gate
     uses: benchcutlogic/code-factory/.github/workflows/browser-evidence.yml@main
     with:
-      browser_required: ${{ needs.risk-policy-gate.outputs.browser_required }}
+      browser_required: ${{ needs.risk_policy_gate.outputs.browser_required }}
     secrets: inherit
 
-  review-agent:
-    needs: risk-policy-gate
+  review_agent:
+    name: Review Agent
+    needs: risk_policy_gate
     uses: benchcutlogic/code-factory/.github/workflows/review-agent-gate.yml@main
     with:
-      review_required: ${{ needs.risk-policy-gate.outputs.review_required }}
+      review_required: ${{ needs.risk_policy_gate.outputs.review_required }}
       head_sha: ${{ github.event.pull_request.head.sha }}
     secrets: inherit

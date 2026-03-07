@@ -11,16 +11,17 @@ on:
         type: string
     outputs:
       risk_tier:
-        value: ${{ jobs.risk-policy-gate.outputs.risk_tier }}
+        value: ${{ jobs.risk_policy_gate.outputs.risk_tier }}
       required_checks:
-        value: ${{ jobs.risk-policy-gate.outputs.required_checks }}
+        value: ${{ jobs.risk_policy_gate.outputs.required_checks }}
       browser_required:
-        value: ${{ jobs.risk-policy-gate.outputs.browser_required }}
+        value: ${{ jobs.risk_policy_gate.outputs.browser_required }}
       review_required:
-        value: ${{ jobs.risk-policy-gate.outputs.review_required }}
+        value: ${{ jobs.risk_policy_gate.outputs.review_required }}
 
 jobs:
-  risk-policy-gate:
+  risk_policy_gate:
+    name: risk-policy-gate
     runs-on: ubuntu-latest
     outputs:
       risk_tier: ${{ steps.preflight.outputs.risk_tier }}
