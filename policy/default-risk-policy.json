@@ -1,0 +1,72 @@
+{
+  "version": "1",
+  "riskTierRules": {
+    "critical": [
+      ".github/workflows/**",
+      "infra/**",
+      "terraform/**",
+      "migrations/**",
+      "db/**",
+      "schema/**"
+    ],
+    "high": [
+      "api/**",
+      "app/api/**",
+      "lib/tools/**",
+      "src/routes/api/**",
+      "backend/**",
+      "services/**"
+    ],
+    "medium": [
+      "src/**",
+      "app/**",
+      "web/**",
+      "mobile/**",
+      "frontend/**",
+      "packages/**"
+    ],
+    "low": [
+      "**"
+    ]
+  },
+  "mergePolicy": {
+    "critical": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "CI Pipeline",
+        "Browser Evidence",
+        "Review Agent"
+      ]
+    },
+    "high": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "CI Pipeline",
+        "Review Agent"
+      ]
+    },
+    "medium": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "CI Pipeline"
+      ]
+    },
+    "low": {
+      "requiredChecks": [
+        "risk-policy-gate",
+        "CI Pipeline"
+      ]
+    }
+  },
+  "docsDriftRules": {
+    "controlPlanePaths": [
+      ".github/workflows/**",
+      ".code-factory/**"
+    ],
+    "docsPaths": [
+      "README.md",
+      "docs/**",
+      "AGENTS.md"
+    ]
+  }
+}

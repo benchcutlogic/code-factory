@@ -1,0 +1,21 @@
+name: Review Agent Rerun
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number
+        required: true
+        type: string
+      head_sha:
+        description: Pull request head SHA
+        required: true
+        type: string
+
+jobs:
+  review-rerun:
+    uses: benchcutlogic/code-factory/.github/workflows/review-rerun.yml@main
+    with:
+      pr_number: ${{ github.event.inputs.pr_number }}
+      head_sha: ${{ github.event.inputs.head_sha }}
+    secrets: inherit

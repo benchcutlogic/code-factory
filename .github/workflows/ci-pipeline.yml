@@ -1,0 +1,32 @@
+name: CI Pipeline
+
+on:
+  workflow_call:
+
+jobs:
+  CI-Pipeline:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: benchcutlogic/code-factory
+          path: .code-factory-control
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - if: ${{ hashFiles('**/package.json') != '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: "9"
+      - if: ${{ hashFiles('**/Cargo.toml') != '' }}
+        uses: dtolnay/rust-toolchain@stable
+      - run: python .code-factory-control/scripts/ci_pipeline.py

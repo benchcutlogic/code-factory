@@ -1,0 +1,20 @@
+{
+  "version": "1",
+  "ci": {
+    "commands": []
+  },
+  "browserEvidence": {
+    "requiredPaths": [],
+    "captureCommand": "",
+    "verifyCommand": ""
+  },
+  "reviewAgent": {
+    "requiredPaths": [],
+    "checkRunName": "",
+    "rerunComment": "",
+    "acceptableConclusions": [
+      "success"
+    ],
+    "timeoutMinutes": 20
+  }
+}

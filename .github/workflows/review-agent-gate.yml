@@ -1,0 +1,34 @@
+name: Review Agent
+
+on:
+  workflow_call:
+    inputs:
+      review_required:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+
+jobs:
+  Review-Agent:
+    name: Review Agent
+    runs-on: ubuntu-latest
+    permissions:
+      checks: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: benchcutlogic/code-factory
+          path: .code-factory-control
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+          REVIEW_REQUIRED: ${{ inputs.review_required }}
+        run: python .code-factory-control/scripts/review_agent_gate.py

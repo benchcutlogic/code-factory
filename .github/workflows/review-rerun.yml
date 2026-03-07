@@ -1,0 +1,33 @@
+name: review-rerun
+
+on:
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+
+jobs:
+  review-rerun:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: benchcutlogic/code-factory
+          path: .code-factory-control
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+        run: python .code-factory-control/scripts/request_review_rerun.py
