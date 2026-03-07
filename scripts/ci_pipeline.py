@@ -53,7 +53,10 @@ def run_command(command: str) -> None:
 
 def main() -> int:
     config = load_repo_config()
-    commands = config.get("ci", {}).get("commands") or infer_commands()
+    ci_config = config.get("ci", {})
+    setup_commands = ci_config.get("setupCommands") or []
+    commands = ci_config.get("commands") or infer_commands()
+    commands = [*setup_commands, *commands]
     if not commands:
         print("No CI commands configured or inferred. Passing without execution.")
         return 0

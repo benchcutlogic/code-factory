@@ -11,21 +11,50 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - id: detect
+        name: Detect CI runtime
+        shell: bash
+        run: |
+          python3 <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import pathlib
+
+          root = pathlib.Path.cwd()
+          config_path = root / ".code-factory" / "config.json"
+          package_path = root / "package.json"
+
+          node_version = "20"
+          if config_path.exists():
+              with config_path.open("r", encoding="utf-8") as handle:
+                  config = json.load(handle)
+              configured = config.get("ci", {}).get("nodeVersion")
+              if isinstance(configured, str) and configured.strip():
+                  node_version = configured.strip()
+
+          if node_version == "20" and package_path.exists():
+              with package_path.open("r", encoding="utf-8") as handle:
+                  package_json = json.load(handle)
+              engine_version = package_json.get("engines", {}).get("node")
+              if isinstance(engine_version, str) and engine_version.strip():
+                  node_version = engine_version.strip()
+
+          print(f"node_version={node_version}")
+          PY
       - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ steps.detect.outputs.node_version }}
           cache: npm
       - if: ${{ hashFiles('**/package.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/package-lock.json') == '' }}
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ steps.detect.outputs.node_version }}
       - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
         uses: pnpm/action-setup@v4
       - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ steps.detect.outputs.node_version }}
           cache: pnpm
       - if: ${{ hashFiles('**/Cargo.toml') != '' }}
         uses: dtolnay/rust-toolchain@stable
