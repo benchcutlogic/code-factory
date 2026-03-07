@@ -22,14 +22,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - if: ${{ hashFiles('**/package.json') != '' }}
+      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: pnpm
       - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
         uses: pnpm/action-setup@v4
         with:
           version: "9"
+      - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+        run: pnpm install --frozen-lockfile
+      - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
+        run: npm ci
+      - if: ${{ hashFiles('**/package.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/package-lock.json') == '' }}
+        run: npm install
       - env:
           BROWSER_REQUIRED: ${{ inputs.browser_required }}
         run: python .code-factory-control/scripts/browser_evidence.py
