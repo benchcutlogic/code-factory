@@ -1,0 +1,13 @@
+name: Code Factory CI Pipeline
+description: Run Code Factory CI command harness
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      env:
+        CODE_FACTORY_DIR: ${{ github.action_path }}/../../..
+      run: python "${{ github.action_path }}/../../../scripts/ci_pipeline.py"

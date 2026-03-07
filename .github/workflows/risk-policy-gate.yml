@@ -35,16 +35,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/checkout@v4
-        with:
-          repository: benchcutlogic/code-factory
-          path: .code-factory-control
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
       - id: preflight
-        env:
-          BASE_SHA: ${{ inputs.base_sha }}
-          HEAD_SHA: ${{ inputs.head_sha }}
-          CODE_FACTORY_DIR: ${{ github.workspace }}/.code-factory-control
-        run: python .code-factory-control/scripts/risk_policy_gate.py
+        uses: benchcutlogic/code-factory/.github/actions/risk-policy@main
+        with:
+          base_sha: ${{ inputs.base_sha }}
+          head_sha: ${{ inputs.head_sha }}

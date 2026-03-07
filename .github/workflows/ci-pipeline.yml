@@ -11,13 +11,6 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: benchcutlogic/code-factory
-          path: .code-factory-control
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
       - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
         uses: actions/setup-node@v4
         with:
@@ -38,4 +31,4 @@ jobs:
           version: "9"
       - if: ${{ hashFiles('**/Cargo.toml') != '' }}
         uses: dtolnay/rust-toolchain@stable
-      - run: python .code-factory-control/scripts/ci_pipeline.py
+      - uses: benchcutlogic/code-factory/.github/actions/ci-pipeline@main

@@ -1,0 +1,23 @@
+name: Code Factory Risk Policy
+description: Run Code Factory risk policy preflight
+
+inputs:
+  base_sha:
+    description: Base SHA for the diff
+    required: true
+  head_sha:
+    description: Head SHA for the diff
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      env:
+        BASE_SHA: ${{ inputs.base_sha }}
+        HEAD_SHA: ${{ inputs.head_sha }}
+        CODE_FACTORY_DIR: ${{ github.action_path }}/../../..
+      run: python "${{ github.action_path }}/../../../scripts/risk_policy_gate.py"

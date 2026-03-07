@@ -1,0 +1,19 @@
+name: Code Factory Browser Evidence
+description: Run Code Factory browser evidence harness
+
+inputs:
+  browser_required:
+    description: Whether browser evidence is required
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      env:
+        BROWSER_REQUIRED: ${{ inputs.browser_required }}
+        CODE_FACTORY_DIR: ${{ github.action_path }}/../../..
+      run: python "${{ github.action_path }}/../../../scripts/browser_evidence.py"

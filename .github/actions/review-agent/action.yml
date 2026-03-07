@@ -1,0 +1,25 @@
+name: Code Factory Review Agent
+description: Run Code Factory review agent gate
+
+inputs:
+  review_required:
+    description: Whether review validation is required
+    required: true
+  head_sha:
+    description: Current PR head SHA
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        HEAD_SHA: ${{ inputs.head_sha }}
+        REVIEW_REQUIRED: ${{ inputs.review_required }}
+        CODE_FACTORY_DIR: ${{ github.action_path }}/../../..
+      run: python "${{ github.action_path }}/../../../scripts/review_agent_gate.py"
