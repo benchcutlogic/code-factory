@@ -1,6 +1,6 @@
 # Code Factory
 
-Shared control-plane for risk-aware, agent-driven development across the `benchcutlogic` organization.
+Shared control-plane for risk-aware, agent-driven development.
 
 ## What lives here
 
@@ -25,5 +25,5 @@ Each participating repository should include:
 
 ## Notes
 
-- Org-wide rulesets still need a token with `admin:org`.
-- Repository rollout can still proceed with repo admin access alone.
+- Sensitive policy details should live in repo-local `.code-factory/config.json` and `.code-factory/policy.json` overrides.
+- Organization-level rulesets still need repository or organization admin permissions to manage.
