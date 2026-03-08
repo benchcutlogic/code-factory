@@ -15,24 +15,24 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+      - if: ${{ hashFiles('pnpm-lock.yaml') != '' }}
         uses: pnpm/action-setup@v4
-      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+      - if: ${{ hashFiles('pnpm-lock.yaml') != '' }}
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: pnpm
-      - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
+      - if: ${{ hashFiles('package-lock.json') != '' && hashFiles('pnpm-lock.yaml') == '' }}
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
-      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+      - if: ${{ hashFiles('pnpm-lock.yaml') != '' }}
         run: pnpm install --frozen-lockfile
-      - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
+      - if: ${{ hashFiles('package-lock.json') != '' && hashFiles('pnpm-lock.yaml') == '' }}
         run: npm ci
-      - if: ${{ hashFiles('**/package.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/package-lock.json') == '' }}
+      - if: ${{ hashFiles('package.json') != '' && hashFiles('pnpm-lock.yaml') == '' && hashFiles('package-lock.json') == '' }}
         run: npm install
-      - uses: benchcutlogic/code-factory/.github/actions/browser-evidence@v1.0.0
+      - uses: benchcutlogic/code-factory/.github/actions/browser-evidence@v1.0.1
         with:
           browser_required: ${{ inputs.browser_required }}

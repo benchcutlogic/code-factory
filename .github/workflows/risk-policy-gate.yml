@@ -36,7 +36,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: preflight
-        uses: benchcutlogic/code-factory/.github/actions/risk-policy@v1.0.0
+        uses: benchcutlogic/code-factory/.github/actions/risk-policy@v1.0.1
         with:
           base_sha: ${{ inputs.base_sha }}
           head_sha: ${{ inputs.head_sha }}

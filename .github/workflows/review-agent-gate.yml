@@ -19,7 +19,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: benchcutlogic/code-factory/.github/actions/review-agent@v1.0.0
+      - uses: benchcutlogic/code-factory/.github/actions/review-agent@v1.0.1
         with:
           review_required: ${{ inputs.review_required }}
           head_sha: ${{ inputs.head_sha }}

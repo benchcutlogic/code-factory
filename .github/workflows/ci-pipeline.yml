@@ -40,22 +40,22 @@ jobs:
 
           print(f"node_version={node_version}")
           PY
-      - if: ${{ hashFiles('**/package-lock.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' }}
+      - if: ${{ hashFiles('package-lock.json') != '' && hashFiles('pnpm-lock.yaml') == '' }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.detect.outputs.node_version }}
           cache: npm
-      - if: ${{ hashFiles('**/package.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/package-lock.json') == '' }}
+      - if: ${{ hashFiles('package.json') != '' && hashFiles('pnpm-lock.yaml') == '' && hashFiles('package-lock.json') == '' }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.detect.outputs.node_version }}
-      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+      - if: ${{ hashFiles('pnpm-lock.yaml') != '' }}
         uses: pnpm/action-setup@v4
-      - if: ${{ hashFiles('**/pnpm-lock.yaml') != '' }}
+      - if: ${{ hashFiles('pnpm-lock.yaml') != '' }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.detect.outputs.node_version }}
           cache: pnpm
-      - if: ${{ hashFiles('**/Cargo.toml') != '' }}
+      - if: ${{ hashFiles('Cargo.toml') != '' }}
         uses: dtolnay/rust-toolchain@stable
-      - uses: benchcutlogic/code-factory/.github/actions/ci-pipeline@v1.0.0
+      - uses: benchcutlogic/code-factory/.github/actions/ci-pipeline@v1.0.1
