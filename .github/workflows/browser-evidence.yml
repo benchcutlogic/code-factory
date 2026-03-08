@@ -33,6 +33,6 @@ jobs:
         run: npm ci
       - if: ${{ hashFiles('**/package.json') != '' && hashFiles('**/pnpm-lock.yaml') == '' && hashFiles('**/package-lock.json') == '' }}
         run: npm install
-      - uses: benchcutlogic/code-factory/.github/actions/browser-evidence@main
+      - uses: benchcutlogic/code-factory/.github/actions/browser-evidence@v1.0.0
         with:
           browser_required: ${{ inputs.browser_required }}

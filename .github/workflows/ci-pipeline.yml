@@ -58,4 +58,4 @@ jobs:
           cache: pnpm
       - if: ${{ hashFiles('**/Cargo.toml') != '' }}
         uses: dtolnay/rust-toolchain@stable
-      - uses: benchcutlogic/code-factory/.github/actions/ci-pipeline@main
+      - uses: benchcutlogic/code-factory/.github/actions/ci-pipeline@v1.0.0
