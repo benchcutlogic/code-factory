@@ -14,7 +14,7 @@ on:
 
 jobs:
   review-rerun:
-    uses: benchcutlogic/code-factory/.github/workflows/review-rerun.yml@v1.0.1
+    uses: benchcutlogic/code-factory/.github/workflows/review-rerun.yml@v1.0.2
     with:
       pr_number: ${{ github.event.inputs.pr_number }}
       head_sha: ${{ github.event.inputs.head_sha }}
