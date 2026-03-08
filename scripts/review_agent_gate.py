@@ -29,12 +29,13 @@ def main() -> int:
     repository = os.environ.get("GITHUB_REPOSITORY", "")
     head_sha = os.environ.get("HEAD_SHA", "")
 
-    if not check_name:
-        if required:
-            print("Review agent is required but no checkRunName is configured.", file=sys.stderr)
-            return 1
-        print("No review agent configured. Passing.")
+    if not required:
+        print("Review agent is not required for this PR. Passing.")
         return 0
+
+    if not check_name:
+        print("Review agent is required but no checkRunName is configured.", file=sys.stderr)
+        return 1
 
     if not token or not repository or not head_sha:
         print("Missing GitHub context for review agent validation.", file=sys.stderr)
