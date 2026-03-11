@@ -26,12 +26,6 @@ jobs:
       head_sha: ${{ github.event.pull_request.head.sha }}
     secrets: inherit
 
-  ci_pipeline:
-    name: CI Pipeline
-    needs: risk_policy_gate
-    uses: benchcutlogic/code-factory/.github/workflows/ci-pipeline.yml@v1.0.2
-    secrets: inherit
-
   review_agent:
     name: Review Agent
     needs: risk_policy_gate
