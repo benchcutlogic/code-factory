@@ -1,0 +1,59 @@
+name: resolve-outdated-comments
+
+on:
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: number
+    secrets:
+      token:
+        required: true
+        description: "PAT with pull-requests:write scope (GITHUB_TOKEN is blocked by enterprise policy)"
+
+jobs:
+  resolve-outdated-comments:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Resolve outdated review threads
+        env:
+          GH_TOKEN: ${{ secrets.token }}
+        run: |
+          # Get all unresolved, outdated review threads for this PR
+          THREADS=$(gh api graphql -f query='
+            query($owner: String!, $repo: String!, $pr: Int!) {
+              repository(owner: $owner, name: $repo) {
+                pullRequest(number: $pr) {
+                  reviewThreads(first: 100) {
+                    nodes {
+                      id
+                      isResolved
+                      isOutdated
+                    }
+                  }
+                }
+              }
+            }
+          ' -f owner="${{ github.repository_owner }}" \
+            -f repo="${GITHUB_REPOSITORY#*/}" \
+            -F pr=${{ inputs.pr_number }} \
+            --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isOutdated == true and .isResolved == false) | .id')
+
+          if [ -z "$THREADS" ]; then
+            echo "No outdated unresolved threads found"
+            exit 0
+          fi
+
+          # Resolve each outdated thread
+          for THREAD_ID in $THREADS; do
+            echo "Resolving thread: $THREAD_ID"
+            gh api graphql -f query='
+              mutation($threadId: ID!) {
+                resolveReviewThread(input: {threadId: $threadId}) {
+                  thread { isResolved }
+                }
+              }
+            ' -f threadId="$THREAD_ID" || true
+          done
