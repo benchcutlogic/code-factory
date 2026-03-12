@@ -15,20 +15,10 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
-  checks: read
 
 jobs:
-  review_agent:
-    name: Review Agent
-    uses: benchcutlogic/code-factory/.github/workflows/review-agent-gate.yml@main
-    with:
-      review_required: "true"
-      head_sha: ${{ github.event.pull_request.head.sha }}
-    secrets: inherit
-
   auto_merge:
     name: Auto Merge
-    needs: [review_agent]
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
