@@ -1,0 +1,17 @@
+name: Auto Merge
+
+on:
+  workflow_call:
+
+jobs:
+  auto_merge:
+    name: Auto Merge
+    if: github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - run: gh pr merge ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --squash --auto --delete-branch
+        env:
+          GH_TOKEN: ${{ github.token }}
