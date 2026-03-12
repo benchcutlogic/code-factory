@@ -1,4 +1,4 @@
-name: Code Factory
+name: Code Factory PR
 
 on:
   pull_request:
@@ -13,24 +13,25 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  pull-requests: read
+  contents: write
+  pull-requests: write
   checks: read
 
 jobs:
-  risk_policy_gate:
-    name: risk-policy-gate
-    uses: benchcutlogic/code-factory/.github/workflows/risk-policy-gate.yml@v1.0.2
+  review_agent:
+    name: Review Agent
+    uses: benchcutlogic/code-factory/.github/workflows/review-agent-gate.yml@main
     with:
-      base_sha: ${{ github.event.pull_request.base.sha }}
+      review_required: "true"
       head_sha: ${{ github.event.pull_request.head.sha }}
     secrets: inherit
 
-  review_agent:
-    name: Review Agent
-    needs: risk_policy_gate
-    uses: benchcutlogic/code-factory/.github/workflows/review-agent-gate.yml@v1.0.2
-    with:
-      review_required: ${{ needs.risk_policy_gate.outputs.review_required }}
-      head_sha: ${{ github.event.pull_request.head.sha }}
-    secrets: inherit
+  auto_merge:
+    name: Auto Merge
+    needs: [review_agent]
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh pr merge ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --squash --auto --delete-branch
+        env:
+          GH_TOKEN: ${{ github.token }}
